@@ -46,12 +46,12 @@ class SearchStockXByString extends React.Component {
   };
 
   handleClick = async e => {
-    const { shoeName } = this.state
+    // const { shoeName } = this.state.shoeName
     const { client } = this.props;
-    // console.log(this.state);
+    console.log(this.state.shoeName);
     let response = await client.query({
       query: queryStockXByString,
-      variables: { query: shoeName }
+      variables: { query: encodeURIComponent(this.state.shoeName) }
     })
     console.log(response.data)
   }
