@@ -7,7 +7,7 @@ import Routes from '../routes';
 const AppRoot = ({ classes, children }) => (
   <div>
     <div className={classes.root}>
-      <NavBar />
+      {/* <NavBar /> */}
     </div>
     <div>
       <Routes />
