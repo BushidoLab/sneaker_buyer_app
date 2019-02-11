@@ -5,9 +5,15 @@ import { withStyles } from '@material-ui/core/styles';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import { withApollo } from 'react-apollo';
+import { withApollo, Query } from 'react-apollo';
 import { queryStockXByString } from '../../graphql/queries/searchStockXByString'
 
+// FOR NOW MAKE MASSIVE CONTAINER
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import Downshift from 'downshift'
 
 const styles = theme => ({
   container: {
@@ -30,12 +36,31 @@ const styles = theme => ({
   },
 });
 
+function renderComponent() {
+  return (
+    <List component="nav">
+        <ListItem button>
+          <ListItemText 
+          // key={this.state.shoes}
+          primary="my yeezy 2..0"
+          />
+        </ListItem>
+  </List>
+  )
+}
+
+
+
+
+
 
 class SearchStockXByString extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       shoeName: '',
+      shoes: [{id: ''}],
+      dataLoaded: false
     };
     this.handleClick=this.handleClick.bind(this);
   }
@@ -53,13 +78,18 @@ class SearchStockXByString extends React.Component {
       query: queryStockXByString,
       variables: { query: encodeURIComponent(this.state.shoeName) }
     })
-    console.log(response.data)
+    .then((res) => {
+      this.setState({shoes: res.data.queryStockXByString.hits, dataLoaded: true})
+    })
+    console.log(this.state.shoes)
+    renderComponent()
   }
 
   render() {
     const { classes } = this.props;
 
     return (
+      <div>
       <form className={classes.container} noValidate autoComplete="off">
         <TextField
           id="standard-name"
@@ -69,12 +99,25 @@ class SearchStockXByString extends React.Component {
           onChange={this.handleChange('shoeName')}
           margin="normal"
         />
-
       <Button variant="contained" className={classes.button} onClick={this.handleClick}>
         Default
       </Button>
-
       </form>
+      
+      <List component="nav">
+        {this.state.shoes.map(({ shoe }) => (
+            <ListItem button>
+              <ListItemText 
+              key={this.state.shoes}
+              primary={shoe}
+              />
+            </ListItem>
+        )) || []}
+      </List>
+
+      </div>
+
+
     );
   }
 }
