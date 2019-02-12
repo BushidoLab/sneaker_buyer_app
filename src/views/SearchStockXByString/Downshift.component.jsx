@@ -34,7 +34,7 @@ class AutoComplete extends React.Component {
     handleChange = name => event => {
         this.setState({ [name]: event.target.value });
         this.makeApiCall()
-        console.log(this.state);
+        // console.log(this.state.shoes[0].thumbnail_url);
     };
 
     makeApiCall = async e => {
@@ -75,7 +75,7 @@ class AutoComplete extends React.Component {
                       /* .filter(item => !inputValue || item.value.includes(inputValue)) */
 
                       .map((item, index) => (
-                        <li
+                        <ListItem
                           {...getItemProps({
                             key: item.value,
                             index,
@@ -87,8 +87,14 @@ class AutoComplete extends React.Component {
                             },
                           })}
                         >
+                        <ListItemAvatar>
+                        <Avatar alt="Remy Sharp" src={item.thumbnail_url} />
+                        </ListItemAvatar>
+                        <ListItemText>
                           {item.name}
-                        </li>
+                        </ListItemText>
+                        </ListItem>
+
                       ))
                   : null}
                   <List />
